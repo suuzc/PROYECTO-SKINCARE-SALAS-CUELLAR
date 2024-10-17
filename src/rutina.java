@@ -1,5 +1,9 @@
 
 public class rutina {
+	private String tipoPiel;
+	private boolean tieneAcne;
+	private boolean tieneSensibilidad;
+	private int edad;
 	
 	//LIMPIEZA
 	//no tiene acne, tipo de piel
