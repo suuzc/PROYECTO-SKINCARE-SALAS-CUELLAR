@@ -148,6 +148,31 @@ public class GUIProyecto extends JFrame {
         contentPane.add(btnRutina);
 
         JButton btnProductos = new JButton("Consultar PRODUCTOS");
+        btnProductos.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		 // Instanciar la clase RutinaCuidadoFacial
+                producto nuevoProductos = new producto();
+                
+                // Convertir el rango de edad a un valor numérico para los métodos
+                int edad = convertirEdad(edadSeleccionada);
+
+                // Establecer los valores en la clase
+                nuevoProductos.setTipoPiel(tipopiel);
+                nuevoProductos.setEdad(edad);
+                nuevoProductos.setTieneRosacea(tieneRosacea);
+                nuevoProductos.setTieneAcne(tieneAcne);
+                
+                // Obtener resultados de los métodos
+                String mensajeProductos = nuevoProductos.limpiar(tipopiel, tieneAcne, tieneRosacea) + "\n" +
+                		nuevoProductos.tonificar(tipopiel) + "\n" +
+                		nuevoProductos.tratamientos(tipopiel, tieneRosacea, tieneAcne) + "\n" +
+                		nuevoProductos.hidratar(tipopiel, edad) + "\n" +
+                		nuevoProductos.protectorSolar(tipopiel, edad);
+
+                // Mostrar resultados en JOptionPane
+                JOptionPane.showMessageDialog(null, mensajeProductos, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        });
         btnProductos.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
         btnProductos.setBounds(246, 504, 234, 70);
         contentPane.add(btnProductos);
