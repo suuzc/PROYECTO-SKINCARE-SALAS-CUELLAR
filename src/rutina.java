@@ -3,6 +3,7 @@ public class rutina {
 	private String tipoPiel;
 	private boolean tieneAcne;
 	private boolean tieneSensibilidad;
+	private boolean tieneRosacea;
 	private int edad;
 	
 	//LIMPIEZA
@@ -86,6 +87,46 @@ public class rutina {
         }
         return proteccionSolar;
     }
+
+	public String getTipoPiel() {
+		return tipoPiel;
+	}
+
+	public void setTipoPiel(String tipoPiel) {
+		this.tipoPiel = tipoPiel;
+	}
+
+	public boolean isTieneAcne() {
+		return tieneAcne;
+	}
+
+	public void setTieneAcne(boolean tieneAcne) {
+		this.tieneAcne = tieneAcne;
+	}
+
+	public boolean isTieneSensibilidad() {
+		return tieneSensibilidad;
+	}
+
+	public void setTieneSensibilidad(boolean tieneSensibilidad) {
+		this.tieneSensibilidad = tieneSensibilidad;
+	}
+
+	public boolean isTieneRosacea() {
+		return tieneRosacea;
+	}
+
+	public void setTieneRosacea(boolean tieneRosacea) {
+		this.tieneRosacea = tieneRosacea;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
     
     
 }
