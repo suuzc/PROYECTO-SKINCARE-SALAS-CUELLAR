@@ -7,6 +7,7 @@ public class producto implements Serializable{
     private boolean tieneSensibilidad;
     private boolean tieneRosacea;
     private int edad;
+    private String nombre;
  
     public producto(String usuario, String tipoPiel, boolean tieneAcne, boolean tieneSensibilidad, boolean tieneRosacea,
 			int edad) {
