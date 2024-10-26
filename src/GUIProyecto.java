@@ -194,7 +194,7 @@ public class GUIProyecto extends JFrame {
                 // Mostrar resultados en JOptionPane
                 JOptionPane.showMessageDialog(null, mensajeProductos, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
                 historialRutinas.add(nuevaRutina);
-                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("rutinas.dat"))) {
+                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("productos.dat"))) {
 		            // serializacion
 		            salida.writeObject(nuevaRutina);
 		        } catch (IOException e1) {
@@ -217,6 +217,46 @@ public class GUIProyecto extends JFrame {
         textField.setColumns(10);
         
         JButton btnBuscarResultadosAnteriores = new JButton("Buscar Resultados Anteriores");
+        btnBuscarResultadosAnteriores.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nombreBuscado = textField.getText();
+                if (nombreBuscado.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingresa tu nombre para buscar los resultados anteriores.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                StringBuilder resultados = new StringBuilder();
+
+                // Buscar en historial de rutinas
+                for (rutina r : historialRutinas) {
+                    if (r.getUsuario().equalsIgnoreCase(nombreBuscado)) {
+                        resultados.append("Resultados de Rutina:\n");
+                        resultados.append("Usuario: ").append(r.getUsuario()).append("\n");
+                        resultados.append(r.limpiar(tipopiel, tieneAcne, tieneRosacea)).append("\n");
+                        resultados.append(r.tonificar(tipopiel)).append("\n");
+                        resultados.append(r.tratamientos(tipopiel, tieneRosacea, tieneAcne)).append("\n");
+                        resultados.append(r.hidratar(tipopiel, convertirEdad(edadSeleccionada))).append("\n");
+                        resultados.append(r.protectorSolar(tipopiel, convertirEdad(edadSeleccionada))).append("\n\n");
+                    }
+                }
+
+                // Buscar en historial de productos
+                for (String producto : historialProductos) {
+                    if (producto.contains(nombreBuscado)) {  // Suponiendo que los productos también contienen el nombre del usuario en algún formato
+                        resultados.append("Resultados de Producto:\n");
+                        resultados.append(producto).append("\n\n");
+                    }
+                }
+
+                // Mostrar resultados
+                if (resultados.length() > 0) {
+                    JOptionPane.showMessageDialog(null, resultados.toString(), "Resultados Anteriores", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontraron resultados anteriores para el nombre " + nombreBuscado, "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
         btnBuscarResultadosAnteriores.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
         btnBuscarResultadosAnteriores.setBounds(93, 511, 302, 70);
         contentPane.add(btnBuscarResultadosAnteriores);
