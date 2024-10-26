@@ -1,11 +1,28 @@
+import java.io.Serializable;
 
-public class rutina {
+public class rutina implements Serializable{
+	private String usuario;
 	private String tipoPiel;
 	private boolean tieneAcne;
 	private boolean tieneSensibilidad;
 	private boolean tieneRosacea;
 	private int edad;
 	
+	
+	public rutina(String usuario, String tipoPiel, boolean tieneAcne, boolean tieneSensibilidad, boolean tieneRosacea,
+			int edad) {
+		this.usuario = usuario;
+		this.tipoPiel = tipoPiel;
+		this.tieneAcne = tieneAcne;
+		this.tieneSensibilidad = tieneSensibilidad;
+		this.tieneRosacea = tieneRosacea;
+		this.edad = edad;
+	}
+
+	public rutina() {
+		// TODO Auto-generated constructor stub
+	}
+
 	//LIMPIEZA
 	//no tiene acne, tipo de piel
 	public String limpiar(String tipoPiel, boolean tieneAcne, boolean tieneSensibilidad) {
@@ -126,6 +143,14 @@ public class rutina {
 
 	public void setEdad(int edad) {
 		this.edad = edad;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
     
     

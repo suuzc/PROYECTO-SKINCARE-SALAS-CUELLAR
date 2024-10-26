@@ -2,6 +2,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import archivosFrutas.fruta;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -10,7 +13,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class GUIProyecto extends JFrame {
 
@@ -20,7 +28,12 @@ public class GUIProyecto extends JFrame {
     String edadSeleccionada;
     boolean tieneRosacea = false;
     boolean tieneAcne = false;
-
+    private JTextField textField;
+    rutina nuevaRutina = new rutina();
+    producto nuevoProductos = new producto();
+    String nombre;
+    private ArrayList<rutina> historialRutinas = new ArrayList<>();
+    private ArrayList<String> historialProductos = new ArrayList<>();
     /**
      * Launch the application.
      */
@@ -63,17 +76,17 @@ public class GUIProyecto extends JFrame {
             }
         });
 
-        comboBoxpiel.setBounds(192, 165, 83, 22);
+        comboBoxpiel.setBounds(202, 182, 83, 22);
         contentPane.add(comboBoxpiel);
 
         JLabel lblNewLabel_1 = new JLabel("Selecciona tu tipo de piel:");
         lblNewLabel_1.setFont(new Font("YouYuan", Font.PLAIN, 20));
-        lblNewLabel_1.setBounds(95, 120, 290, 14);
+        lblNewLabel_1.setBounds(133, 149, 240, 22);
         contentPane.add(lblNewLabel_1);
 
         JLabel lblNewLabel_2 = new JLabel("Selecciona tu rango de edad:");
         lblNewLabel_2.setFont(new Font("YouYuan", Font.PLAIN, 20));
-        lblNewLabel_2.setBounds(116, 215, 295, 22);
+        lblNewLabel_2.setBounds(110, 232, 268, 22);
         contentPane.add(lblNewLabel_2);
 
         JComboBox<String> comboBoxedad = new JComboBox<>(new String[]{
@@ -89,12 +102,12 @@ public class GUIProyecto extends JFrame {
                 edadSeleccionada = comboBoxedad.getSelectedItem().toString();
             }
         });
-        comboBoxedad.setBounds(139, 265, 234, 28);
+        comboBoxedad.setBounds(127, 274, 234, 28);
         contentPane.add(comboBoxedad);
 
         JLabel lblNewLabel_3 = new JLabel("¿Especificaciones?");
         lblNewLabel_3.setFont(new Font("YouYuan", Font.PLAIN, 20));
-        lblNewLabel_3.setBounds(139, 334, 230, 22);
+        lblNewLabel_3.setBounds(148, 330, 192, 22);
         contentPane.add(lblNewLabel_3);
 
         JRadioButton rdbtnRosacea = new JRadioButton("Rosacea");
@@ -120,43 +133,52 @@ public class GUIProyecto extends JFrame {
         JButton btnRutina = new JButton("Consultar RUTINA");
         btnRutina.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Instanciar la clase RutinaCuidadoFacial
-                rutina nuevaRutina = new rutina();
+  
                 
                 // Convertir el rango de edad a un valor numérico para los métodos
                 int edad = convertirEdad(edadSeleccionada);
-
+                nombre = textField.getText();
                 // Establecer los valores en la clase
+                nuevaRutina.setUsuario(nombre);
                 nuevaRutina.setTipoPiel(tipopiel);
                 nuevaRutina.setEdad(edad);
                 nuevaRutina.setTieneRosacea(tieneRosacea);
                 nuevaRutina.setTieneAcne(tieneAcne);
+               
                 
                 // Obtener resultados de los métodos
-                String mensajeRutina = nuevaRutina.limpiar(tipopiel, tieneAcne, tieneRosacea) + "\n" +
+                String mensajeRutina = nuevaRutina.getUsuario() + "\n" +
+                		nuevaRutina.limpiar(tipopiel, tieneAcne, tieneRosacea) + "\n" +
                 		nuevaRutina.tonificar(tipopiel) + "\n" +
                 		nuevaRutina.tratamientos(tipopiel, tieneRosacea, tieneAcne) + "\n" +
                 		nuevaRutina.hidratar(tipopiel, edad) + "\n" +
                 		nuevaRutina.protectorSolar(tipopiel, edad);
 
                 // Mostrar resultados en JOptionPane
-                JOptionPane.showMessageDialog(null, mensajeRutina, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, mensajeRutina, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);             
+                historialRutinas.add(nuevaRutina);
+                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("rutinas.dat"))) {
+		            // serializacion
+		            salida.writeObject(nuevaRutina);
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
             }
         });
         btnRutina.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
-        btnRutina.setBounds(10, 504, 213, 70);
+        btnRutina.setBounds(10, 426, 213, 70);
         contentPane.add(btnRutina);
 
         JButton btnProductos = new JButton("Consultar PRODUCTOS");
         btnProductos.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		 // Instanciar la clase RutinaCuidadoFacial
-                producto nuevoProductos = new producto();
+
                 
                 // Convertir el rango de edad a un valor numérico para los métodos
                 int edad = convertirEdad(edadSeleccionada);
-
+                nombre = textField.getText();
                 // Establecer los valores en la clase
+                nuevaRutina.setUsuario(nombre);
                 nuevoProductos.setTipoPiel(tipopiel);
                 nuevoProductos.setEdad(edad);
                 nuevoProductos.setTieneRosacea(tieneRosacea);
@@ -171,11 +193,33 @@ public class GUIProyecto extends JFrame {
 
                 // Mostrar resultados en JOptionPane
                 JOptionPane.showMessageDialog(null, mensajeProductos, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
+                historialRutinas.add(nuevaRutina);
+                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("rutinas.dat"))) {
+		            // serializacion
+		            salida.writeObject(nuevaRutina);
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
         	}
         });
         btnProductos.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
-        btnProductos.setBounds(246, 504, 234, 70);
+        btnProductos.setBounds(233, 426, 234, 70);
         contentPane.add(btnProductos);
+        
+        JLabel lblNewLabel_1_1 = new JLabel("Ingresa tu nombre:");
+        lblNewLabel_1_1.setFont(new Font("Dialog", Font.PLAIN, 20));
+        lblNewLabel_1_1.setBounds(152, 78, 184, 22);
+        contentPane.add(lblNewLabel_1_1);
+        
+        textField = new JTextField();
+        textField.setBounds(182, 111, 123, 20);
+        contentPane.add(textField);
+        textField.setColumns(10);
+        
+        JButton btnBuscarResultadosAnteriores = new JButton("Buscar Resultados Anteriores");
+        btnBuscarResultadosAnteriores.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
+        btnBuscarResultadosAnteriores.setBounds(93, 511, 302, 70);
+        contentPane.add(btnBuscarResultadosAnteriores);
     }
 
     // Método para convertir la edad seleccionada a un número para los métodos de RutinaCuidadoFacial

@@ -1,12 +1,28 @@
+import java.io.Serializable;
 
-public class producto {
+public class producto implements Serializable{
+	private String usuario;
     private String tipoPiel;
     private boolean tieneAcne;
     private boolean tieneSensibilidad;
     private boolean tieneRosacea;
     private int edad;
  
-    // Método de Limpieza
+    public producto(String usuario, String tipoPiel, boolean tieneAcne, boolean tieneSensibilidad, boolean tieneRosacea,
+			int edad) {
+    	this.usuario = usuario;
+		this.tipoPiel = tipoPiel;
+		this.tieneAcne = tieneAcne;
+		this.tieneSensibilidad = tieneSensibilidad;
+		this.tieneRosacea = tieneRosacea;
+		this.edad = edad;
+	}
+
+	public producto() {
+		// TODO Auto-generated constructor stub
+	}
+
+	// Método de Limpieza
     public String limpiar(String tipoPiel, boolean tieneAcne, boolean tieneSensibilidad) {
         String limpieza = "";
         if (tipoPiel.equals("seca")) {
@@ -127,4 +143,13 @@ public class producto {
     public void setEdad(int edad) {
         this.edad = edad;
     }
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+    
 }
