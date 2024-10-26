@@ -173,89 +173,9 @@ public class GUIProyecto extends JFrame {
         btnProductos.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
 
-                
-                // Convertir el rango de edad a un valor numérico para los métodos
-                int edad = convertirEdad(edadSeleccionada);
-                nombre = textField.getText();
-                // Establecer los valores en la clase
-                nuevaRutina.setUsuario(nombre);
-                nuevoProductos.setTipoPiel(tipopiel);
-                nuevoProductos.setEdad(edad);
-                nuevoProductos.setTieneRosacea(tieneRosacea);
-                nuevoProductos.setTieneAcne(tieneAcne);
-                
-                // Obtener resultados de los métodos
-                String mensajeProductos = nuevoProductos.limpiar(tipopiel, tieneAcne, tieneRosacea) + "\n" +
-                		nuevoProductos.tonificar(tipopiel) + "\n" +
-                		nuevoProductos.tratamientos(tipopiel, tieneRosacea, tieneAcne) + "\n" +
-                		nuevoProductos.hidratar(tipopiel, edad) + "\n" +
-                		nuevoProductos.protectorSolar(tipopiel, edad);
-
-                // Mostrar resultados en JOptionPane
-                JOptionPane.showMessageDialog(null, mensajeProductos, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
-                historialRutinas.add(nuevaRutina);
-                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("productos.dat"))) {
-		            // serializacion
-		            salida.writeObject(nuevaRutina);
-		        } catch (IOException e1) {
-		            e1.printStackTrace();
-		        }
-        	}
-        });
-        btnProductos.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
-        btnProductos.setBounds(233, 426, 234, 70);
-        contentPane.add(btnProductos);
-        
-        JLabel lblNewLabel_1_1 = new JLabel("Ingresa tu nombre:");
-        lblNewLabel_1_1.setFont(new Font("Dialog", Font.PLAIN, 20));
-        lblNewLabel_1_1.setBounds(152, 78, 184, 22);
-        contentPane.add(lblNewLabel_1_1);
-        
-        textField = new JTextField();
-        textField.setBounds(182, 111, 123, 20);
-        contentPane.add(textField);
-        textField.setColumns(10);
-        
-        JButton btnBuscarResultadosAnteriores = new JButton("Buscar Resultados Anteriores");
-        btnBuscarResultadosAnteriores.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String nombreBuscado = textField.getText();
-                if (nombreBuscado.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingresa tu nombre para buscar los resultados anteriores.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                StringBuilder resultados = new StringBuilder();
-
-                // Buscar en historial de rutinas
-                for (rutina r : historialRutinas) {
-                    if (r.getUsuario().equalsIgnoreCase(nombreBuscado)) {
-                        resultados.append("Resultados de Rutina:\n");
-                        resultados.append("Usuario: ").append(r.getUsuario()).append("\n");
-                        resultados.append(r.limpiar(tipopiel, tieneAcne, tieneRosacea)).append("\n");
-                        resultados.append(r.tonificar(tipopiel)).append("\n");
-                        resultados.append(r.tratamientos(tipopiel, tieneRosacea, tieneAcne)).append("\n");
-                        resultados.append(r.hidratar(tipopiel, convertirEdad(edadSeleccionada))).append("\n");
-                        resultados.append(r.protectorSolar(tipopiel, convertirEdad(edadSeleccionada))).append("\n\n");
-                    }
-                }
-
-                // Buscar en historial de productos
-                for (String producto : historialProductos) {
-                    if (producto.contains(nombreBuscado)) {  // Suponiendo que los productos también contienen el nombre del usuario en algún formato
-                        resultados.append("Resultados de Producto:\n");
-                        resultados.append(producto).append("\n\n");
-                    }
-                }
-
-                // Mostrar resultados
-                if (resultados.length() > 0) {
-                    JOptionPane.showMessageDialog(null, resultados.toString(), "Resultados Anteriores", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se encontraron resultados anteriores para el nombre " + nombreBuscado, "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
-                }
             }
         });
+
 
         btnBuscarResultadosAnteriores.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
         btnBuscarResultadosAnteriores.setBounds(93, 511, 302, 70);
