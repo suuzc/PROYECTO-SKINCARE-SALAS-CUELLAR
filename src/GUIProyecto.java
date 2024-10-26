@@ -173,6 +173,53 @@ public class GUIProyecto extends JFrame {
         btnProductos.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
 
+                
+                // Convertir el rango de edad a un valor numérico para los métodos
+                int edad = convertirEdad(edadSeleccionada);
+                nombre = textField.getText();
+                // Establecer los valores en la clase
+                nuevaRutina.setUsuario(nombre);
+                nuevoProductos.setTipoPiel(tipopiel);
+                nuevoProductos.setEdad(edad);
+                nuevoProductos.setTieneRosacea(tieneRosacea);
+                nuevoProductos.setTieneAcne(tieneAcne);
+                
+                // Obtener resultados de los métodos
+                String mensajeProductos = nuevoProductos.limpiar(tipopiel, tieneAcne, tieneRosacea) + "\n" +
+                		nuevoProductos.tonificar(tipopiel) + "\n" +
+                		nuevoProductos.tratamientos(tipopiel, tieneRosacea, tieneAcne) + "\n" +
+                		nuevoProductos.hidratar(tipopiel, edad) + "\n" +
+                		nuevoProductos.protectorSolar(tipopiel, edad);
+
+                // Mostrar resultados en JOptionPane
+                JOptionPane.showMessageDialog(null, mensajeProductos, "Rutina de Skincare", JOptionPane.INFORMATION_MESSAGE);
+                historialRutinas.add(nuevaRutina);
+                try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("productos.dat"))) {
+		            // serializacion
+		            salida.writeObject(nuevaRutina);
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
+        	}
+        });
+        btnProductos.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
+        btnProductos.setBounds(233, 426, 234, 70);
+        contentPane.add(btnProductos);
+        
+        JLabel lblNewLabel_1_1 = new JLabel("Ingresa tu nombre:");
+        lblNewLabel_1_1.setFont(new Font("Dialog", Font.PLAIN, 20));
+        lblNewLabel_1_1.setBounds(152, 78, 184, 22);
+        contentPane.add(lblNewLabel_1_1);
+        
+        textField = new JTextField();
+        textField.setBounds(182, 111, 123, 20);
+        contentPane.add(textField);
+        textField.setColumns(10);
+        
+        JButton btnBuscarResultadosAnteriores = new JButton("Buscar Resultados Anteriores");
+        btnBuscarResultadosAnteriores.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
             }
         });
 
